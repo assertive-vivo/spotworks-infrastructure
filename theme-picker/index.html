@@ -1,60 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Choose Your Theme</title>
-  <style>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">  
+  <title>Choose Your Theme</title>  
+  <style>  
     html, body {
       height: 100%;
       margin: 0;
-      overflow: hidden;
+      overflow: hidden; /* Disable scrolling */
       width: 100%;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on iOS/Android */
     }
 
-    body {
-      background: 
-        linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)),
-        url('https://cdn.pixabay.com/animation/2024/02/14/19/10/19-10-26-764_256.gif') 
-        center/cover no-repeat;
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    body {  
+      background-color: #121212; /* Spotify dark background */  
+      color: #ffffff;  
+      font-family: 'Helvetica Neue', Arial, sans-serif;  
       margin: 0;
-      position: relative;
     }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(18, 18, 18, 0.9) 100%);
-      z-index: -1;
-    }
-
+    /* Center wrapper to fix exact vertical + horizontal centering */
     .center-wrapper {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      justify-content: center;  
       text-align: center;
       width: 100%;
-      max-width: 900px;
+      max-width: 600px;
       padding: 20px;
       box-sizing: border-box;
-      z-index: 10;
     }
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-10px);
       }
       to {
         opacity: 1;
@@ -62,25 +48,19 @@
       }
     }
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 40px;
-      user-select: none;
+    h1 {  
+      font-size: 24px;  
+      margin-bottom: 30px;  
+      user-select: none;  
+      -webkit-user-select: none;  
       opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
-      letter-spacing: 1px;
-      font-weight: 700;
-      background: linear-gradient(to right, #1ed760, #1db954);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      padding: 0 15px;
-    }
-
+      animation: fadeIn 2s ease forwards;
+    }  
+  
     @keyframes buttonsFadeUp {
       from {
         opacity: 0;
-        transform: translateY(100px);
+        transform: translateY(100px); /* moved further down */
       }
       to {
         opacity: 1;
@@ -88,359 +68,67 @@
       }
     }
 
-    .button-row {
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-      justify-content: center;
-      opacity: 0;
-      animation: buttonsFadeUp 1.5s ease forwards;
-      animation-delay: 0.3s;
-      width: 100%;
-    }
-
-    .square-button {
-      background-color: rgba(30, 215, 96, 0.15);
-      color: white;
-      border: 2px solid rgba(30, 215, 96, 0.4);
-      width: 220px;
-      height: 220px;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    .button-row {  
+      display: flex;  
+      gap: 20px;  
+      flex-wrap: wrap;  
+      justify-content: center;  
+      opacity: 0;           /* Start hidden */
+      animation: buttonsFadeUp 2s ease forwards;
+      animation-delay: 0s;  /* Start immediately */
+    }  
+  
+    .square-button {  
+      background-color: #1ed760; /* Spotify green */  
+      color: white;  
+      border: none;  
+      width: 140px;  
+      height: 140px;  
+      font-size: 16px;  
+      font-weight: bold;  
+      border-radius: 12px;  
+      cursor: pointer;  
+      transition: transform 0.2s ease-in-out;
       transform-origin: center;
-      user-select: none;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      line-height: 1.4;
-      backdrop-filter: blur(5px);
-    }
-
-    .square-button:hover {
-      background-color: rgba(30, 215, 96, 0.25);
-      transform: scale(1.08);
-      box-shadow: 0 12px 30px rgba(30, 215, 96, 0.25);
-    }
-
-    .square-button:active {
-      transform: scale(0.98);
-      transition: transform 0.1s ease;
-    }
-
-    .icon-container {
-      width: 100px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      border-radius: 50%;
-      background: rgba(18, 18, 18, 0.6);
-    }
-
-    .icon-container i {
-      font-size: 60px;
-      transition: all 0.3s ease;
-    }
-
-    .square-button:hover .icon-container i {
-      transform: scale(1.1);
-    }
-
-    .theme-info {
-      margin-top: 35px;
-      font-size: 16px;
-      color: #b3b3b3;
-      max-width: 600px;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.2s forwards;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
-      line-height: 1.6;
-      background: rgba(25, 20, 20, 0.4);
-      padding: 15px 25px;
-      border-radius: 12px;
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .background-element {
-      position: absolute;
-      opacity: 0.15;
-      z-index: 0;
-      animation: float 20s infinite linear;
-      filter: blur(1px);
-    }
-
-    .circle {
-      border-radius: 50%;
-      background: linear-gradient(135deg, #1ed760, #1db954);
-    }
-
-    .square {
-      transform: rotate(45deg);
-      background: linear-gradient(135deg, #191414, #121212);
-    }
-
-    .triangle {
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      background: linear-gradient(135deg, #1db954, #191414);
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) rotate(0deg);
-      }
-      100% {
-        transform: translateY(-100vh) rotate(360deg);
-      }
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.4);
-      z-index: 5;
-      opacity: 0;
-      animation: fadeIn 2s ease 2s forwards;
-    }
-
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 24px;
-        margin-bottom: 30px;
-      }
-      
-      .square-button {
-        width: 160px;
-        height: 160px;
-        font-size: 16px;
-      }
-      
-      .icon-container {
-        width: 80px;
-        height: 80px;
-      }
-      
-      .icon-container i {
-        font-size: 40px;
-      }
-      
-      .button-row {
-        gap: 20px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 22px;
-      }
-      
-      .square-button {
-        width: 100%;
-        max-width: 280px;
-        height: 120px;
-        font-size: 15px;
-        flex-direction: row;
-        justify-content: flex-start;
-        padding-left: 20px;
-        text-align: left;
-        /* Center buttons in mobile view */
-        margin: 0 auto;
-      }
-      
-      .icon-container {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 0;
-        margin-right: 15px;
-      }
-      
-      .icon-container i {
-        font-size: 30px;
-      }
-      
-      .button-row {
-        flex-direction: column;
-        gap: 16px;
-      }
-      
-      .theme-info {
-        font-size: 14px;
-        padding: 12px 20px;
-      }
-    }
-    
-    /* Desktop-specific enhancements */
-    @media (min-width: 1024px) {
-      .square-button {
-        width: 240px;
-        height: 240px;
-        font-size: 20px;
-      }
-      
-      h1 {
-        font-size: 36px;
-      }
-      
-      .button-row {
-        gap: 60px;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-  <!-- Background elements will be generated by JavaScript -->
+      user-select: none;         
+      -webkit-user-select: none;  
+      -moz-user-select: none;  
+      -ms-user-select: none;  
+      -webkit-tap-highlight-color: transparent;
+      will-change: transform;
+    }  
   
-  <!-- Dark overlay -->
-  <div class="overlay"></div>
+    .square-button:hover,  
+    .square-button:focus,  
+    .square-button:active {  
+      transform: scale(1.10);  
+      outline: none;  
+    }  
   
+    /* Mobile responsiveness */  
+    @media (max-width: 480px) {  
+      .square-button {  
+        width: 100%;  
+        max-width: 280px;  
+        height: 100px;  
+        font-size: 15px;  
+      }  
+  
+      .button-row {  
+        flex-direction: column;  
+        gap: 16px;  
+      }  
+    }  
+  </style>  
+</head>  
+<body>  
   <div class="center-wrapper">
-    <h1>Choose Your Preferred Theme</h1>
-    
-    <div class="button-row">
-      <button class="square-button" id="originalThemeBtn">
-        <div class="icon-container">
-          <i class="fas fa-moon" style="color: #f0f0f0;"></i>
-        </div>
-        Original Theme
-      </button>
-      <button class="square-button" id="amoledThemeBtn">
-        <div class="icon-container">
-          <i class="fas fa-moon" style="color: #000; text-shadow: 0 0 8px rgba(255,255,255,0.5);"></i>
-        </div>
-        AMOLED Black Theme
-      </button>
+    <h1>Choose your preferred theme</h1>  
+  
+    <div class="button-row">  
+      <button class="square-button" onclick="window.location.href='https://example.com/original-theme'">Original theme</button>  
+      <button class="square-button" onclick="window.location.href='https://example.com/amoled-theme'">AMOLED Black theme</button>  
     </div>
-    
-    <p class="theme-info">
-      Both themes can be directly installed even when the current theme is different.
-    </p>
   </div>
-  
-  <div class="footer">
-   © 2025 SpotWorks Infrastructure
-  </div>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const originalBtn = document.getElementById('originalThemeBtn');
-      const amoledBtn = document.getElementById('amoledThemeBtn');
-      let activeButton = null;
-      
-      // Function to reset all buttons to normal state
-      function resetButtons() {
-        [originalBtn, amoledBtn].forEach(btn => {
-          btn.style.transform = '';
-          btn.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
-          btn.style.backgroundColor = 'rgba(30, 215, 96, 0.15)';
-        });
-      }
-      
-      // Function to handle button clicks
-      function handleButtonClick(button, url) {
-        // Reset all buttons
-        resetButtons();
-        
-        // Apply click effect to current button
-        button.style.transform = 'scale(0.95)';
-        button.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
-        button.style.backgroundColor = 'rgba(30, 215, 96, 0.3)';
-        
-        // Set as active button
-        activeButton = button;
-        
-        // After animation, navigate to URL
-        setTimeout(() => {
-          // Reset button after animation
-          resetButtons();
-          activeButton = null;
-          
-          // Navigate to the theme URL
-          window.location.href = url;
-        }, 300);
-      }
-      
-      // Add event listeners
-      originalBtn.addEventListener('click', function() {
-        handleButtonClick(this, 'https://example.com/original-theme');
-      });
-      
-      amoledBtn.addEventListener('click', function() {
-        handleButtonClick(this, 'https://example.com/amoled-theme');
-      });
-      
-      // Reset buttons when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!originalBtn.contains(e.target) && !amoledBtn.contains(e.target)) {
-          resetButtons();
-          activeButton = null;
-        }
-      });
-      
-      // Create background elements
-      function createBackgroundElements() {
-        const body = document.body;
-        const types = ['circle', 'square', 'triangle'];
-        const colors = [
-          'linear-gradient(135deg, #1ed760, #1db954)',
-          'linear-gradient(135deg, #191414, #121212)',
-          'linear-gradient(135deg, #1db954, #191414)',
-          'linear-gradient(135deg, #1ed760, #191414)'
-        ];
-        
-        // Create 18 background elements
-        for (let i = 0; i < 18; i++) {
-          const element = document.createElement('div');
-          element.classList.add('background-element');
-          
-          // Random type
-          const type = types[Math.floor(Math.random() * types.length)];
-          element.classList.add(type);
-          
-          // Random size
-          const isMobile = window.innerWidth <= 768;
-          const size = isMobile ? 
-            (40 + Math.random() * 80) : 
-            (60 + Math.random() * 140);
-          element.style.width = `${size}px`;
-          element.style.height = `${size}px`;
-          
-          // Position below the viewport (100% to 130% of viewport height)
-          element.style.left = `${Math.random() * 100}%`;
-          element.style.top = `${100 + Math.random() * 30}%`;
-          
-          // Random animation
-          const duration = 25 + Math.random() * 30;
-          const delay = Math.random() * 15;
-          element.style.animation = `float ${duration}s infinite linear`;
-          element.style.animationDelay = `${delay}s`;
-          
-          // Random color
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          element.style.background = color;
-          
-          body.appendChild(element);
-        }
-      }
-      
-      // Create background elements
-      createBackgroundElements();
-    });
-  </script>
-</body>
+</body>  
 </html>
-
