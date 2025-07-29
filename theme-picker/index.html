@@ -4,6 +4,7 @@
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">  
   <title>Spotify Theme Selector</title>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -22,23 +23,33 @@
       position: relative;
       font-family: 'Helvetica Neue', Arial, sans-serif;  
       margin: 0;
-      background: #121212 url('https://cdn.pixabay.com/animation/2024/02/14/19/10/19-10-26-764_256.gif') no-repeat center center;
-      background-size: cover;
+      background: #121212;
       color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
     }
     
-    /* Background overlay with Spotify green tint */
-    body::before {
-      content: '';
+    /* Animated background */
+    .background-animation {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(29, 185, 84, 0.5); /* #1db954 with 50% opacity */
+      background: url('https://cdn.pixabay.com/animation/2024/02/14/19/10/19-10-26-764_256.gif') no-repeat center center;
+      background-size: cover;
+      z-index: 0;
+    }
+    
+    /* Background overlay with Spotify green tint */
+    .background-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(29, 185, 84, 0.45); /* #1db954 with opacity */
       z-index: 1;
     }
 
@@ -87,6 +98,18 @@
         transform: translateY(-10px);
       }
     }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(30, 215, 96, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 15px rgba(30, 215, 96, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(30, 215, 96, 0);
+      }
+    }
 
     h1 {  
       font-size: 32px;  
@@ -96,6 +119,17 @@
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: rgba(255,255,255,0.8);
+      margin-top: -30px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+      animation-delay: 0.3s;
+      font-weight: 300;
     }
   
     .button-row {  
@@ -131,6 +165,8 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      animation: pulse 3s infinite;
+      animation-delay: 3s;
     }  
     
     .square-button::after {
@@ -181,6 +217,11 @@
     @media (max-width: 480px) {  
       h1 {
         font-size: 24px;
+        margin-bottom: 20px;
+      }
+      
+      .subtitle {
+        font-size: 16px;
         margin-bottom: 30px;
       }
       
@@ -217,6 +258,9 @@
       opacity: 0;
       animation: fadeIn 1s ease forwards;
       animation-delay: 1.5s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
     .spotify-logo {
@@ -226,8 +270,6 @@
       background-color: #1ed760;
       border-radius: 50%;
       position: relative;
-      top: 4px;
-      margin: 0 5px;
     }
     
     .spotify-logo::after {
@@ -242,22 +284,78 @@
       border-top-color: transparent;
       transform: rotate(-30deg);
     }
+    
+    /* Visualizer effect */
+    .visualizer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      z-index: 1;
+      opacity: 0.6;
+    }
+    
+    .bar {
+      width: 6px;
+      background: #1ed760;
+      border-radius: 3px;
+      animation: visualizer 1.5s infinite ease-in-out;
+      height: 20px;
+    }
+    
+    .bar:nth-child(1) { animation-delay: 0s; height: 40px; }
+    .bar:nth-child(2) { animation-delay: 0.1s; height: 60px; }
+    .bar:nth-child(3) { animation-delay: 0.2s; height: 30px; }
+    .bar:nth-child(4) { animation-delay: 0.3s; height: 70px; }
+    .bar:nth-child(5) { animation-delay: 0.4s; height: 50px; }
+    .bar:nth-child(6) { animation-delay: 0.5s; height: 65px; }
+    .bar:nth-child(7) { animation-delay: 0.4s; height: 45px; }
+    .bar:nth-child(8) { animation-delay: 0.3s; height: 35px; }
+    .bar:nth-child(9) { animation-delay: 0.2s; height: 55px; }
+    .bar:nth-child(10) { animation-delay: 0.1s; height: 65px; }
+    
+    @keyframes visualizer {
+      0%, 100% { transform: scaleY(0.8); }
+      50% { transform: scaleY(1.5); }
+    }
   </style>  
 </head>  
 <body>  
+  <div class="background-animation"></div>
+  <div class="background-overlay"></div>
+  
   <div class="center-wrapper">
     <h1>Choose Your Theme</h1>  
-  
+    <div class="subtitle">Select your preferred Spotify experience</div>
+    
     <div class="button-row">  
       <button class="square-button" onclick="window.location.href='https://example.com/original-theme'">
-        <div class="icon original-icon">🎵</div>
+        <div class="icon original-icon"><i class="fas fa-music"></i></div>
         <div>Original Theme</div>
       </button>  
       <button class="square-button" onclick="window.location.href='https://example.com/amoled-theme'">
-        <div class="icon amoled-icon">🔳</div>
+        <div class="icon amoled-icon"><i class="fas fa-moon"></i></div>
         <div>AMOLED Theme</div>
       </button>  
     </div>
+  </div>
+  
+  <div class="visualizer">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
   </div>
   
   <div class="footer">
