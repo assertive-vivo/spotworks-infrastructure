@@ -1,9 +1,9 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">  
-  <title>Spotify Theme Selector</title>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Spotify Theme Selector</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -15,8 +15,8 @@
     html, body {
       height: 100%;
       width: 100%;
-      overflow: hidden; /* Disable scrolling */
-      -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight */
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {  
@@ -30,8 +30,9 @@
       align-items: center;
     }
     
-    /* Animated background */
-    .background-animation {
+    /* Fixed background GIF */
+    body::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
@@ -40,16 +41,18 @@
       background: url('https://cdn.pixabay.com/animation/2024/02/14/19/10/19-10-26-764_256.gif') no-repeat center center;
       background-size: cover;
       z-index: 0;
+      opacity: 0.8;
     }
     
-    /* Background overlay with Spotify green tint */
-    .background-overlay {
+    /* Green tint overlay */
+    body::after {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(29, 185, 84, 0.45); /* #1db954 with opacity */
+      background: linear-gradient(135deg, rgba(29, 185, 84, 0.6), rgba(18, 18, 18, 0.8));
       z-index: 1;
     }
 
@@ -113,23 +116,24 @@
 
     h1 {  
       font-size: 32px;  
-      margin-bottom: 40px;  
+      margin-bottom: 20px;  
       user-select: none;  
       -webkit-user-select: none;  
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     
     .subtitle {
       font-size: 18px;
-      color: rgba(255,255,255,0.8);
-      margin-top: -30px;
+      color: rgba(255,255,255,0.9);
       margin-bottom: 40px;
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
       animation-delay: 0.3s;
       font-weight: 300;
+      max-width: 80%;
+      line-height: 1.5;
     }
   
     .button-row {  
@@ -140,6 +144,7 @@
       opacity: 0;
       animation: buttonsFadeUp 1.5s ease forwards;
       animation-delay: 0.5s;
+      margin-bottom: 30px;
     }  
   
     .square-button {  
@@ -157,7 +162,7 @@
       user-select: none;  
       -webkit-user-select: none;  
       -webkit-tap-highlight-color: transparent;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -186,7 +191,7 @@
     .square-button:focus {  
       transform: scale(1.10) rotate(2deg);  
       outline: none;  
-      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.4);
     }  
     
     .square-button:hover::after {
@@ -205,19 +210,11 @@
       animation-delay: 1.5s;
     }
     
-    .original-icon {
-      color: #1d2c3c;
-    }
-    
-    .amoled-icon {
-      color: #000;
-    }
-    
     /* Mobile responsiveness */  
     @media (max-width: 480px) {  
       h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
+        font-size: 26px;
+        margin-bottom: 15px;
       }
       
       .subtitle {
@@ -251,7 +248,7 @@
     .footer {
       position: absolute;
       bottom: 20px;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.9);
       font-size: 14px;
       text-align: center;
       z-index: 2;
@@ -261,6 +258,10 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      padding: 10px 20px;
+      background: rgba(18, 18, 18, 0.7);
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
     }
     
     .spotify-logo {
@@ -288,16 +289,16 @@
     /* Visualizer effect */
     .visualizer {
       position: absolute;
-      bottom: 0;
+      bottom: 70px;
       left: 0;
       width: 100%;
-      height: 80px;
+      height: 60px;
       display: flex;
       align-items: flex-end;
       justify-content: center;
       gap: 4px;
       z-index: 1;
-      opacity: 0.6;
+      opacity: 0.7;
     }
     
     .bar {
@@ -323,39 +324,70 @@
       0%, 100% { transform: scaleY(0.8); }
       50% { transform: scaleY(1.5); }
     }
+    
+    /* Floating music notes */
+    .floating-note {
+      position: absolute;
+      z-index: 1;
+      font-size: 24px;
+      opacity: 0.7;
+      animation: floatNote 15s linear infinite;
+    }
+    
+    @keyframes floatNote {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
   </style>  
 </head>  
 <body>  
-  <div class="background-animation"></div>
-  <div class="background-overlay"></div>
+  <!-- Floating music notes -->
+  <div class="floating-note" style="left: 10%; top: 90%; animation-delay: 0s;">♪</div>
+  <div class="floating-note" style="left: 20%; top: 85%; animation-delay: 2s;">♫</div>
+  <div class="floating-note" style="left: 30%; top: 95%; animation-delay: 4s;">♪</div>
+  <div class="floating-note" style="left: 70%; top: 92%; animation-delay: 6s;">♫</div>
+  <div class="floating-note" style="left: 85%; top: 88%; animation-delay: 8s;">♪</div>
+  <div class="floating-note" style="left: 50%; top: 93%; animation-delay: 10s;">♫</div>
   
   <div class="center-wrapper">
     <h1>Choose Your Theme</h1>  
-    <div class="subtitle">Select your preferred Spotify experience</div>
+    <div class="subtitle">Select your preferred Spotify experience to customize your music journey</div>
     
     <div class="button-row">  
       <button class="square-button" onclick="window.location.href='https://example.com/original-theme'">
-        <div class="icon original-icon"><i class="fas fa-music"></i></div>
+        <div class="icon"><i class="fas fa-music"></i></div>
         <div>Original Theme</div>
       </button>  
       <button class="square-button" onclick="window.location.href='https://example.com/amoled-theme'">
-        <div class="icon amoled-icon"><i class="fas fa-moon"></i></div>
+        <div class="icon"><i class="fas fa-moon"></i></div>
         <div>AMOLED Theme</div>
       </button>  
     </div>
-  </div>
-  
-  <div class="visualizer">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
+    
+    <div class="visualizer">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
   </div>
   
   <div class="footer">
