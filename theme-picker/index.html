@@ -3,29 +3,49 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">  
-  <title>Choose Your Theme</title>  
-  <style>  
+  <title>Spotify Theme Selector</title>  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     html, body {
       height: 100%;
-      margin: 0;
-      overflow: hidden; /* Disable scrolling */
       width: 100%;
-      -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on iOS/Android */
+      overflow: hidden; /* Disable scrolling */
+      -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight */
     }
 
     body {  
-      background-color: #121212; /* Spotify dark background */  
-      color: #ffffff;  
+      position: relative;
       font-family: 'Helvetica Neue', Arial, sans-serif;  
       margin: 0;
+      background: #121212 url('https://cdn.pixabay.com/animation/2024/02/14/19/10/19-10-26-764_256.gif') no-repeat center center;
+      background-size: cover;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Background overlay with Spotify green tint */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(29, 185, 84, 0.5); /* #1db954 with 50% opacity */
+      z-index: 1;
     }
 
-    /* Center wrapper to fix exact vertical + horizontal centering */
+    /* Center wrapper */
     .center-wrapper {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      position: relative;
+      z-index: 2;
       display: flex;  
       flex-direction: column;  
       align-items: center;  
@@ -34,9 +54,9 @@
       width: 100%;
       max-width: 600px;
       padding: 20px;
-      box-sizing: border-box;
     }
 
+    /* Animations */
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -47,88 +67,201 @@
         transform: translateY(0);
       }
     }
-
-    h1 {  
-      font-size: 24px;  
-      margin-bottom: 30px;  
-      user-select: none;  
-      -webkit-user-select: none;  
-      opacity: 0;
-      animation: fadeIn 2s ease forwards;
-    }  
-  
+    
     @keyframes buttonsFadeUp {
       from {
         opacity: 0;
-        transform: translateY(100px); /* moved further down */
+        transform: translateY(100px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
+    
+    @keyframes floating {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
 
+    h1 {  
+      font-size: 32px;  
+      margin-bottom: 40px;  
+      user-select: none;  
+      -webkit-user-select: none;  
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+  
     .button-row {  
       display: flex;  
-      gap: 20px;  
+      gap: 30px;  
       flex-wrap: wrap;  
       justify-content: center;  
-      opacity: 0;           /* Start hidden */
-      animation: buttonsFadeUp 2s ease forwards;
-      animation-delay: 0s;  /* Start immediately */
+      opacity: 0;
+      animation: buttonsFadeUp 1.5s ease forwards;
+      animation-delay: 0.5s;
     }  
   
     .square-button {  
       background-color: #1ed760; /* Spotify green */  
       color: white;  
       border: none;  
-      width: 140px;  
-      height: 140px;  
-      font-size: 16px;  
+      width: 160px;  
+      height: 160px;  
+      font-size: 18px;  
       font-weight: bold;  
-      border-radius: 12px;  
+      border-radius: 16px;  
       cursor: pointer;  
-      transition: transform 0.2s ease-in-out;
+      transition: transform 0.3s ease, background-color 0.3s;
       transform-origin: center;
-      user-select: none;         
+      user-select: none;  
       -webkit-user-select: none;  
-      -moz-user-select: none;  
-      -ms-user-select: none;  
       -webkit-tap-highlight-color: transparent;
-      will-change: transform;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }  
+    
+    .square-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
   
     .square-button:hover,  
-    .square-button:focus,  
-    .square-button:active {  
-      transform: scale(1.10);  
+    .square-button:focus {  
+      transform: scale(1.10) rotate(2deg);  
       outline: none;  
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
     }  
-  
+    
+    .square-button:hover::after {
+      transform: translateY(0);
+    }
+    
+    .square-button:active {
+      transform: scale(0.98);
+      background-color: #1db954;
+    }
+    
+    .icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      animation: floating 3s ease-in-out infinite;
+      animation-delay: 1.5s;
+    }
+    
+    .original-icon {
+      color: #1d2c3c;
+    }
+    
+    .amoled-icon {
+      color: #000;
+    }
+    
     /* Mobile responsiveness */  
     @media (max-width: 480px) {  
+      h1 {
+        font-size: 24px;
+        margin-bottom: 30px;
+      }
+      
       .square-button {  
         width: 100%;  
         max-width: 280px;  
-        height: 100px;  
-        font-size: 15px;  
-      }  
+        height: 120px;  
+        font-size: 16px;  
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 15px;
+      }
+      
+      .icon {
+        font-size: 36px;
+        margin-bottom: 0;
+        margin-right: 15px;
+      }
   
       .button-row {  
         flex-direction: column;  
         gap: 16px;  
       }  
-    }  
+    }
+    
+    /* Footer */
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      text-align: center;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 1.5s;
+    }
+    
+    .spotify-logo {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: #1ed760;
+      border-radius: 50%;
+      position: relative;
+      top: 4px;
+      margin: 0 5px;
+    }
+    
+    .spotify-logo::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 10px;
+      height: 10px;
+      border: 3px solid #121212;
+      border-radius: 50%;
+      border-top-color: transparent;
+      transform: rotate(-30deg);
+    }
   </style>  
 </head>  
 <body>  
   <div class="center-wrapper">
-    <h1>Choose your preferred theme</h1>  
+    <h1>Choose Your Theme</h1>  
   
     <div class="button-row">  
-      <button class="square-button" onclick="window.location.href='https://example.com/original-theme'">Original theme</button>  
-      <button class="square-button" onclick="window.location.href='https://example.com/amoled-theme'">AMOLED Black theme</button>  
+      <button class="square-button" onclick="window.location.href='https://example.com/original-theme'">
+        <div class="icon original-icon">🎵</div>
+        <div>Original Theme</div>
+      </button>  
+      <button class="square-button" onclick="window.location.href='https://example.com/amoled-theme'">
+        <div class="icon amoled-icon">🔳</div>
+        <div>AMOLED Theme</div>
+      </button>  
     </div>
+  </div>
+  
+  <div class="footer">
+    <span class="spotify-logo"></span> Spotify Theme Experience
   </div>
 </body>  
 </html>
